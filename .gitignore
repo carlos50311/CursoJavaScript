@@ -1,0 +1,13 @@
+# Ocultar arquivos e pastas comuns
+node_modules/
+dist/
+.env
+*.log
+*.tmp
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.bak
+*.old
+*.orig

@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Exemplo de uma página HTML moderna com recursos interativos">
+    <title>Minha Página HTML Moderna</title>
+    <!-- Bootstrap 5 para design mais moderno -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2c3e50;
+            --accent-color: #e74c3c;
+            --light-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .nav-link {
+            transition: all 0.3s ease;
+            position: relative;
+            margin: 0 10px;
+        }
+
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: white;
+            bottom: -2px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        section {
+            padding: 2rem;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .interactive-element {
+            height: 60px;
+            width: 100%;
+            border-radius: 8px;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        #mouseOverOutDiv {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+            color: white;
+            padding: 2rem 0;
+        }
+
+        .social-icons a {
+            color: white;
+            margin: 0 10px;
+            font-size: 1.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .social-icons a:hover {
+            transform: translateY(-5px);
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.25);
+        }
+
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: none;
+            background-color: var(--primary-color);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            z-index: 1000;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .back-to-top:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Efeito de carregamento na página */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Dark mode toggle */
+        .dark-mode {
+            background-color: #222;
+            color: #f0f0f0;
+        }
+
+        .dark-mode section {
+            background-color: #333;
+            color: #f0f0f0;
+        }
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 768px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Loader -->
+    <div class="loader">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Carregando...</span>
+        </div>
+    </div>
+
+    <!-- Botão voltar ao topo -->
+    <div class="back-to-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <header class="py-4 mb-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                    <h1 class="display-5 fw-bold text-white">Minha Página</h1>
+                </div>
+                <div class="col-md-8">
+                    <nav class="navbar navbar-expand-lg navbar-dark">
+                        <button class="navbar-toggler ms-auto" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#navbarNav">
+                            <span class="navbar-toggler-icon"></span>
+                        </button>
+                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="#apresentacao">
+                                        <i class="fas fa-info-circle me-1"></i> Apresentação
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="#estruturacao">
+                                        <i class="fas fa-sitemap me-1"></i> Estruturação
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="#formulario">
+                                        <i class="fas fa-envelope me-1"></i> Contato
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="#multimidia">
+                                        <i class="fas fa-photo-video me-1"></i> Galeria
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" href="#eventoSection">
+                                        <i class="fas fa-magic me-1"></i> Interativo
+                                    </a>
+                                </li>
+                            </ul>
+                            <button id="darkModeToggle" class="btn btn-sm btn-outline-light ms-3">
+                                <i class="fas fa-moon"></i>
+                            </button>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="apresentacao" class="bg-light">
+            <div class="row">
+                <div class="col-md-8">
+                    <h2 class="display-6 mb-4">Apresentação</h2>
+                    <p class="lead">Bem-vindo à minha página HTML moderna e responsiva!</p>
+                    <p>Este projeto demonstra as melhores práticas de desenvolvimento web, combinando HTML semântico,
+                        CSS moderno e JavaScript interativo em uma página elegante e funcional.</p>
+                    <button class="btn btn-primary mt-3">Saiba mais</button>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-3 bg-white rounded-circle shadow d-inline-block">
+                        <i class="fas fa-rocket text-primary" style="font-size: 5rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="estruturacao">
+            <h2 class="display-6 mb-4">Estruturação</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-code text-primary mb-3" style="font-size: 2.5rem;"></i>
+                            <h3 class="card-title h5">HTML Semântico</h3>
+                            <p class="card-text">Utilização de tags HTML5 para melhor estruturação e acessibilidade.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-paint-brush text-primary mb-3" style="font-size: 2.5rem;"></i>
+                            <h3 class="card-title h5">CSS Moderno</h3>
+                            <p class="card-text">Estilos avançados com animações e transições para melhor experiência.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <i class="fas fa-mobile-alt text-primary mb-3" style="font-size: 2.5rem;"></i>
+                            <h3 class="card-title h5">Responsivo</h3>
+                            <p class="card-text">Layout adaptável para todos os dispositivos, do celular ao desktop.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="formulario" class="bg-light">
+            <h2 class="display-6 mb-4">Entre em Contato</h2>
+            <form id="contactForm">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="nome" class="form-label">Nome</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" id="nome" placeholder="Digite seu nome" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                            <input type="email" class="form-control" id="email" placeholder="Digite seu email" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="assunto" class="form-label">Assunto</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                        <select class="form-select" id="assunto" required>
+                            <option value="" selected disabled>Selecione um assunto</option>
+                            <option value="duvida">Dúvida</option>
+                            <option value="sugestao">Sugestão</option>
+                            <option value="feedback">Feedback</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="mensagem" class="form-label">Mensagem</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-comment"></i></span>
+                        <textarea class="form-control" id="mensagem" rows="5" placeholder="Digite sua mensagem"
+                            required></textarea>
+                    </div>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="newsletter">
+                    <label class="form-check-label" for="newsletter">Receber novidades por email</label>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-paper-plane me-2"></i>Enviar
+                </button>
+                <div class="mt-3" id="formMessage" style="display: none;"></div>
+            </form>
+        </section>
+
+        <section id="multimidia">
+            <h2 class="display-6 mb-4">Galeria</h2>
+            <div class="mb-4">
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary active" data-filter="all">Todos</button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="natureza">Natureza</button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="cidade">Cidade</button>
+                    <button type="button" class="btn btn-outline-primary" data-filter="pessoas">Pessoas</button>
+                </div>
+            </div>
+            <div class="gallery">
+                <img src="https://picsum.photos/id/10/500/500" alt="Imagem de natureza" data-category="natureza"
+                    class="img-fluid shadow">
+                <img src="https://picsum.photos/id/11/500/500" alt="Imagem de cidade" data-category="cidade"
+                    class="img-fluid shadow">
+                <img src="https://picsum.photos/id/12/500/500" alt="Imagem de pessoas" data-category="pessoas"
+                    class="img-fluid shadow">
+                <img src="https://picsum.photos/id/13/500/500" alt="Imagem de natureza" data-category="natureza"
+                    class="img-fluid shadow">
+                <img src="https://picsum.photos/id/14/500/500" alt="Imagem de cidade" data-category="cidade"
+                    class="img-fluid shadow">
+                <img src="https://picsum.photos/id/15/500/500" alt="Imagem de pessoas" data-category="pessoas"
+                    class="img-fluid shadow">
+            </div>
+            <div class="mt-5">
+                <h3 class="h4 mb-3">Vídeo em Destaque</h3>
+                <div class="ratio ratio-16x9 shadow rounded">
+                    <video controls poster="https://picsum.photos/800/450">
+                        <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+                        Seu navegador não suporta a exibição de vídeos.
+                    </video>
+                </div>
+            </div>
+        </section>
+
+        <section id="eventoSection" class="bg-light">
+            <h2 class="display-6 mb-4">Elementos Interativos</h2>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h3 class="card-title h5 mb-3">Clique</h3>
+                            <button id="click-button" class="btn btn-primary w-100">
+                                <i class="fas fa-mouse-pointer me-2"></i>Clique aqui
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h3 class="card-title h5 mb-3">Mouse Over</h3>
+                            <div id="mouseOverOutDiv" class="interactive-element">
+                                Passe o mouse aqui
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <h3 class="card-title h5 mb-3">Mouse Down/Up</h3>
+                            <button id="mouseDownUpButton" class="btn btn-primary w-100">
+                                <i class="fas fa-hand-pointer me-2"></i>Pressione e solte
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-md-6 offset-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <h3 class="card-title h5 mb-3 text-center">Contador Interativo</h3>
+                            <div class="d-flex justify-content-center align-items-center gap-3">
+                                <button id="decrementBtn" class="btn btn-outline-primary">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <span id="counterValue" class="h3 mb-0">0</span>
+                                <button id="incrementBtn" class="btn btn-outline-primary">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="api">
+            <h2>Api consumo externo</h2>
+            <div style="margin: 1em" id="apiSection">
+                <button id="callApi" style="margin-bottom: 1em;" class="btn btn-secondary">Chamar api externa</button>
+            </div>
+
+        </section>
+
+
+    </main>
+
+    <footer class="mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h4 class="h5 mb-3">Sobre Nós</h4>
+                    <p>Este é um exemplo de uma página HTML moderna com recursos interativos, design responsivo e
+                        elementos visuais atraentes.</p>
+                </div>
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h4 class="h5 mb-3">Links Rápidos</h4>
+                    <ul class="nav flex-column">
+                        <li class="nav-item"><a href="#apresentacao"
+                                class="nav-link text-white p-0 mb-2">Apresentação</a></li>
+                        <li class="nav-item"><a href="#estruturacao"
+                                class="nav-link text-white p-0 mb-2">Estruturação</a></li>
+                        <li class="nav-item"><a href="#formulario" class="nav-link text-white p-0 mb-2">Contato</a></li>
+                        <li class="nav-item"><a href="#multimidia" class="nav-link text-white p-0 mb-2">Galeria</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h4 class="h5 mb-3">Redes Sociais</h4>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-github"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4 bg-light">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">&copy; 2025 Minha Página HTML - Todos os direitos reservados</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Desenvolvido com <i class="fas fa-heart text-danger"></i> por Seu Nome</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle com Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Efeito de carregamento da página
+        document.addEventListener('DOMContentLoaded', function () {
+            setTimeout(function () {
+                const loader = document.querySelector('.loader');
+                loader.style.opacity = '0';
+                setTimeout(function () {
+                    loader.style.display = 'none';
+                }, 500);
+            }, 800);
+        });
+
+        // Comportamento do botão voltar ao topo
+        window.addEventListener('scroll', function () {
+            const backToTop = document.querySelector('.back-to-top');
+            if (window.pageYOffset > 300) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        });
+
+        document.querySelector('.back-to-top').addEventListener('click', function () {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+
+        // Animação de rolagem suave para os links de navegação
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Eventos interativos
+        document.getElementById('click-button').addEventListener('click', function () {
+            this.innerHTML = '<i class="fas fa-check me-2"></i>Clicado!';
+            this.classList.remove('btn-primary');
+            this.classList.add('btn-success');
+
+            setTimeout(() => {
+                this.innerHTML = '<i class="fas fa-mouse-pointer me-2"></i>Clique aqui';
+                this.classList.remove('btn-success');
+                this.classList.add('btn-primary');
+            }, 1500);
+        });
+
+        const mouseDiv = document.getElementById('mouseOverOutDiv');
+        mouseDiv.addEventListener('mouseover', function () {
+            mouseDiv.style.backgroundColor = '#e74c3c';
+            mouseDiv.innerHTML = '<i class="fas fa-smile me-2"></i>Mouse sobre!';
+            mouseDiv.style.transform = 'scale(1.1)';
+        });
+        mouseDiv.addEventListener('mouseout', function () {
+            mouseDiv.style.backgroundColor = '#3498db';
+            mouseDiv.innerHTML = 'Passe o mouse aqui';
+            mouseDiv.style.transform = 'scale(1)';
+        });
+
+        const buttonMouse = document.getElementById('mouseDownUpButton');
+        buttonMouse.addEventListener('mousedown', function () {
+            buttonMouse.classList.remove('btn-primary');
+            buttonMouse.classList.add('btn-danger');
+            buttonMouse.innerHTML = '<i class="fas fa-hand-paper me-2"></i>Pressionado!';
+        });
+        buttonMouse.addEventListener('mouseup', function () {
+            buttonMouse.classList.remove('btn-danger');
+            buttonMouse.classList.add('btn-primary');
+            buttonMouse.innerHTML = '<i class="fas fa-hand-pointer me-2"></i>Pressione e solte';
+        });
+
+        // Contador interativo
+        let count = 0;
+        const counterValue = document.getElementById('counterValue');
+
+        document.getElementById('incrementBtn').addEventListener('click', function () {
+            count++;
+            counterValue.textContent = count;
+            animateCounter();
+        });
+
+        document.getElementById('decrementBtn').addEventListener('click', function () {
+            count--;
+            counterValue.textContent = count;
+            animateCounter();
+        });
+
+        function animateCounter() {
+            counterValue.classList.add('text-primary');
+            counterValue.style.transform = 'scale(1.2)';
+            setTimeout(() => {
+                counterValue.style.transform = 'scale(1)';
+                setTimeout(() => {
+                    counterValue.classList.remove('text-primary');
+                }, 300);
+            }, 300);
+        }
+
+        // Formulário de contato
+        document.getElementById('contactForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formMessage = document.getElementById('formMessage');
+            formMessage.className = 'alert alert-success';
+            formMessage.textContent = 'Mensagem enviada com sucesso! Entraremos em contato em breve.';
+            formMessage.style.display = 'block';
+
+            // Resetar formulário
+            this.reset();
+
+            // Esconder mensagem após 5 segundos
+            setTimeout(() => {
+                formMessage.style.display = 'none';
+            }, 5000);
+        });
+
+        // Filtro de galeria
+        document.querySelectorAll('.btn-group .btn').forEach(button => {
+            button.addEventListener('click', function () {
+                // Remover classe active de todos os botões
+                document.querySelectorAll('.btn-group .btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+
+                // Adicionar classe active ao botão clicado
+                this.classList.add('active');
+
+                const filter = this.getAttribute('data-filter');
+                const gallery = document.querySelector('.gallery');
+
+                // Filtrar imagens
+                if (filter === 'all') {
+                    document.querySelectorAll('.gallery img').forEach(img => {
+                        img.style.display = 'block';
+                    });
+                } else {
+                    document.querySelectorAll('.gallery img').forEach(img => {
+                        if (img.getAttribute('data-category') === filter) {
+                            img.style.display = 'block';
+                        } else {
+                            img.style.display = 'none';
+                        }
+                    });
+                }
+            });
+        });
+
+        // Dark mode toggle
+        document.getElementById('darkModeToggle').addEventListener('click', function () {
+            document.body.classList.toggle('dark-mode');
+
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            const icon = this.querySelector('i');
+
+            if (isDarkMode) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+            }
+        });
+    </script>
+    <script type="text/JavaScript" src="api.js"></script>
+</body>
+
+</html>
