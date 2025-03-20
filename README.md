@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /**
  * Este é um curso de JavaScript que cobre os fundamentos da linguagem.
  * O código inclui exemplos práticos e explicações para ajudar os alunos
@@ -17,3 +18,6 @@
  * Certifique-se de executar o código em um ambiente compatível com JavaScript,
  * como um navegador ou um ambiente Node.js, para testar os exemplos.
  */
+=======
+# CursoJavaScript
+>>>>>>> origin/main
